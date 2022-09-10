@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {v4 as uuidv4} from 'uuid';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import axios from 'axios';
 
 import './App.css';
 
@@ -10,6 +11,8 @@ import Header from './components/Header';
 import TaskDetails from './components/TaskDetails';
 
 const App = () => {
+  
+  /*  REMOVIDO PELA ADIÇÃO DE UMA API
   const [tasks, setTasks] = useState([
     {
       id:'1',
@@ -26,7 +29,17 @@ const App = () => {
       title: 'estudar progh',
       completed: false,
     },
-  ]);
+  ]);*/
+
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(()=>{
+    const fetchTasks= async()=>{
+      const {data} = await axios.get('https://jsonplaceholder.cypress.io/todos?_limit=10');
+      setTasks(data);
+    };
+    fetchTasks();
+  },[]);
 
   const handleAddTaskClick = (taskId) =>{
     const newTasks = tasks.map(task =>{
